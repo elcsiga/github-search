@@ -1,0 +1,38 @@
+<div class='gs-content'>
+  <app-page-loading-indicator [progressStatus]="progressStatus">
+  </app-page-loading-indicator>
+
+  <div *ngIf="(searchResults$ | async) as results">
+
+    <div class="gs-section">
+      <app-heading
+        [preTitle]="'Issues for'"
+        [title]="repoFullName$ | async"
+        [subTitle]="'Total issues found: ' + results.total_count"
+      ></app-heading>
+    </div>
+
+    <div class="gs-section chart">
+      <app-d3-bar-chart
+        [data]="toBarChartData(results)"
+        [legend]="chartLegend"
+      >
+      </app-d3-bar-chart>
+    </div>
+
+    <div class="gs-section">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let issue of results.items">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{issue.title}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <small>
+            <ngx-md>{{issue.body}}</ngx-md>
+          </small>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

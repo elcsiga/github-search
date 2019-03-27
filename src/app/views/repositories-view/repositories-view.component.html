@@ -1,0 +1,34 @@
+<div class='gs-content'>
+
+  <app-page-loading-indicator [progressStatus]="progressStatus">
+  </app-page-loading-indicator>
+
+  <div *ngIf="(searchResults$ | async) as results">
+    <div class="gs-section">
+      <app-heading
+        [preTitle]="'Repositories for'"
+        [title]="repoName$ | async"
+        [subTitle]="'Total repositories found: ' + results.total_count">
+      </app-heading>
+    </div>
+
+    <div class="gs-section">
+      <mat-card class="card" *ngFor="let repo of results.items">
+        <h3>{{repo.full_name}}</h3>
+        <div *ngIf="repo.open_issues_count > 0">
+          <small>
+            Open issues: {{repo.open_issues_count}} &nbsp;
+            <a [routerLink]="'/issues/'+repo.full_name">View issues</a>
+          </small>
+        </div>
+        <p>
+          <mat-chip-list>
+            <mat-chip class="small-chip">Forks: {{repo.forks_count}}</mat-chip>
+            <mat-chip class="small-chip">Stargazers: {{repo.stargazers_count}}</mat-chip>
+            <mat-chip class="small-chip">Watchers: {{repo.watchers_count}}</mat-chip>
+          </mat-chip-list>
+        </p>
+      </mat-card>
+    </div>
+  </div>
+</div>

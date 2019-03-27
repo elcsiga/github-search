@@ -1,0 +1,33 @@
+<div class="container gs-dark-theme"
+     [class.full-screen]="isOnMainPage$ | async"
+>
+  <a [routerLink]="['/']">
+    <img class="logo" alt="Github search" src="assets/white-logo.png" />
+  </a>
+  <div class="searchForm">
+    <form [formGroup]='searchForm'>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Search for a GitHub repository ..."
+               [matAutocomplete]="autocomplete"
+               formControlName='searchInput'>
+
+        <button *ngIf="!loadingInProgress"
+                mat-button matSuffix mat-icon-button
+                aria-label="Search"
+                (click)="submitSearch()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <mat-spinner *ngIf="loadingInProgress" matSuffix diameter="20"></mat-spinner>
+      </mat-form-field>
+
+      <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="submitSearch()">
+        <ng-container *ngIf="!loadingInProgress">
+          <mat-option *ngFor="let repoName of repoNameTips" [value]="repoName">
+            <span>{{ repoName }}</span>
+          </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+
+    </form>
+  </div>
+</div>
