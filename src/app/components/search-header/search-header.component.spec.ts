@@ -5,9 +5,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material';
 import {RouterTestingModule} from '@angular/router/testing';
 import {GithubService, Repo, SearchResponse} from '../../services/github-service/github.service';
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {delay} from 'rxjs/operators';
-import {HttpResponse} from '@angular/common/http';
 
 describe('SearchHeaderComponent', () => {
   let component: SearchHeaderComponent;
@@ -92,7 +91,7 @@ describe('SearchHeaderComponent', () => {
     }));
 
     it('should fail silently if Github API does not respond', fakeAsync(() => {
-      githubServiceSpy.searchRepositories.and.callFake( () => of(new HttpResponse())); // returns a http error response
+      githubServiceSpy.searchRepositories.and.callFake(() => throwError('hrrp error'));
       component.searchForm.get('searchInput').setValue('c');
       tick(1000);
       expect(component.loadingInProgress).toBeFalsy();
